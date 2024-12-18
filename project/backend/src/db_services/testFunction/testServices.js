@@ -1,12 +1,11 @@
 const db = require('@/database.js');
 
 // read services
-async function GetTest(Id) {
-    const [records] = await db.query(`select *
-                                      from test
-                                      where Id = ?`, [Id]);
+async function GetTest() {
+    const records = await db.query(`select *
+                                      from User`);
 
-    return records;
+    return records[0];
 }
 
 // delete services

@@ -1,7 +1,7 @@
-const service = require("@/db_services/testFunction/testServices.js");
+const TestService = require("@/db_services/testFunction/testServices.js");
 
 async function Testing(req, res) {
-    const result = await service.GetTest(req.params.Id);
+    const result = await TestService.GetTest();
 
     res.send(result);
 }
