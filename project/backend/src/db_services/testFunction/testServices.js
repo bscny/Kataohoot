@@ -3,8 +3,8 @@ const db = require('@/database.js');
 // read services
 async function GetTest(Id) {
     const [records] = await db.query(`select *
-                                      from test
-                                      where Id = ?`, [Id]);
+                                      from user
+                                      where User_id = ?`, [Id]);
 
     return records;
 }
