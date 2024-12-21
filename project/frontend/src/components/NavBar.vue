@@ -1,40 +1,74 @@
 <template>
     <nav class="navbar">
-        <div class="logo">
-            logo
+        <div>
+            <a href="/">
+                <img src="@/assets/logo.png" class="logo">
+            </a>
         </div>
 
         <div class="title">
             title
         </div>
 
-        <div class="sign-in-up-button">
-            sign in/up
+        <div class="account-field">
+            <button v-if="!authState.isAuthenticated" class="account-btn" @click=navSignup>Signup</button>
+            <button v-if="!authState.isAuthenticated" class="account-btn" @click=navLogin>Login</button>
+            <div v-if="authState.isAuthenticated" class="account-username"> {{ getLoggedUsername() }} </div>
+            <button v-if="authState.isAuthenticated" class="account-btn" @click=logout> Logout </button>
+
         </div>
     </nav>
 </template>
 
 <script>
-export default{
+import { authState, logout } from '@/service/auth.js';
+
+export default {
     name: "NavBar",
+    setup() {
+        return {
+            authState,
+            logout,
+        }
+    },
+    beforeCreate() {
+        console.log("nav beforeCraete");
+        const userdata = localStorage.getItem("userdata");
+        authState.isAuthenticated = (!userdata) ? false : true;
+        
+    },
+    data() {
+        return {
 
-    data(){
-
+        };
     },
 
     methods: {
+        navLogin() {
+            this.$router.push("/Login");
+        },
+        navSignup() {
+            this.$router.push("/Signup");
+        },
+        getLoggedUsername() {
+            let userdata = localStorage.getItem("userdata");
+            if (userdata) {
+                return JSON.parse(userdata).username;
+            }
+
+            return "unknown";
+        }
 
     },
 
     computed: {
+    },
+
+    mounted() {
 
     },
 
-    mounted(){
-
-    },
-
-    created(){
+    created() {
 
     },
 
@@ -42,8 +76,8 @@ export default{
 </script>
 
 <style scoped>
-.navbar{
-    position: fixed;
+.navbar {
+    position: block;
     display: flex;
 
     flex-direction: row;
@@ -60,10 +94,8 @@ export default{
 }
 
 .logo {
-    display: inline;
-
-    padding: 0 0 0 1.5vw;
-    font-size: 1vw;
+    height: 8vh;
+    width: auto;
 }
 
 .title {
@@ -72,10 +104,29 @@ export default{
     font-size: 1vw;
 }
 
-.sign-in-up-button {
+.account-field {
     display: inline;
 
     padding: 0 1.5vw 0 0;
     font-size: 1vw;
+}
+
+.account-btn {
+    background-color: #999dfe;
+    color: rgb(0, 0, 0);
+    padding: 14px 25px;
+    margin-left: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.account-btn:hover {
+    background-color: rgb(107, 84, 255);
+}
+
+.account-username {
+    display: inline;
+    color: rgb(65, 255, 81);
 }
 </style>
